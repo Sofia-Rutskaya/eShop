@@ -10,6 +10,12 @@ services:
        - ASPNETCORE_URLS=http://+:5000
     ports:
       - 5000:5000
+  nginx:
+     image: nginx
+     volumes:  
+      - ./templates:/etc/nginx/templates
+     ports:
+      - 80:80
 
 networks:
   dockernet:

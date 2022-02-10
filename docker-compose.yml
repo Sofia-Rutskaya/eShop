@@ -13,6 +13,8 @@ services:
   nginx:
      image: nginx
      container_name: lde.nginx
+     volumes:
+      - ./templates:/etc/nginx/templates
      ports:
       - 80:80
 

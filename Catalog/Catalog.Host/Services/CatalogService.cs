@@ -11,16 +11,19 @@ namespace Catalog.Host.Services;
 public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogService
 {
     private readonly ICatalogItemRepository _catalogItemRepository;
+    private readonly ICatalogBrandRepository _catalogBrendRepository;
     private readonly IMapper _mapper;
 
     public CatalogService(
         IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
         ILogger<BaseDataService<ApplicationDbContext>> logger,
         ICatalogItemRepository catalogItemRepository,
+        ICatalogBrandRepository catalogBrendRepository,
         IMapper mapper)
         : base(dbContextWrapper, logger)
     {
         _catalogItemRepository = catalogItemRepository;
+        _catalogBrendRepository = catalogBrendRepository;
         _mapper = mapper;
     }
 
@@ -35,6 +38,34 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
                 Data = result.Data.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList(),
                 PageIndex = pageIndex,
                 PageSize = pageSize
+            };
+        });
+    }
+
+    public async Task<PaginatedItemsResponse<CatalogBrandDto>> GetCatalogBrendsAsync(int pageSize, int pageIndex)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogBrendRepository.GetBrendsByPageAsync(pageIndex, pageSize);
+            return new PaginatedItemsResponse<CatalogBrandDto>()
+            {
+                Count = result.TotalCount,
+                Data = result.Data.Select(s => _mapper.Map<CatalogBrandDto>(s)).ToList(),
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+        });
+    }
+
+    public async Task<GetItemByIdResponse<CatalogItemDto>> GetByIdAsync(int id)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogItemRepository.GetByIdAsync(id);
+            return new GetItemByIdResponse<CatalogItemDto>()
+            {
+                Id = id,
+                Data = result.Data.Select(s => _mapper.Map<CatalogItemDto>(s)).FirstOrDefault() !
             };
         });
     }

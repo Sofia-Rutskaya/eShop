@@ -6,4 +6,6 @@ namespace Catalog.Host.Services.Interfaces;
 public interface ICatalogService
 {
     Task<PaginatedItemsResponse<CatalogItemDto>> GetCatalogItemsAsync(int pageSize, int pageIndex);
+    Task<GetItemByIdResponse<CatalogItemDto>> GetByIdAsync(int id);
+    Task<PaginatedItemsResponse<CatalogBrandDto>> GetCatalogBrendsAsync(int pageSize, int pageIndex);
 }

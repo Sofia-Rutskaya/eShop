@@ -7,5 +7,6 @@ namespace Catalog.Host.Repositories.Interfaces
     {
         Task<PaginatedItems<CatalogBrand>> GetBrendsByPageAsync(int pageIndex, int pageSize);
         Task<int?> Add(int id, string brand);
+        Task<ListOfItems<CatalogItem>> GetByBrandAsync(string brand);
     }
 }

@@ -9,11 +9,11 @@ namespace Catalog.Host.Repositories;
 public class CatalogBrandRepository : ICatalogBrandRepository
 {
     private readonly ApplicationDbContext _dbContext;
-    private readonly ILogger<CatalogItemRepository> _logger;
+    private readonly ILogger<CatalogBrandRepository> _logger;
 
     public CatalogBrandRepository(
         IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
-        ILogger<CatalogItemRepository> logger)
+        ILogger<CatalogBrandRepository> logger)
     {
         _dbContext = dbContextWrapper.DbContext;
         _logger = logger;
@@ -44,5 +44,21 @@ public class CatalogBrandRepository : ICatalogBrandRepository
         await _dbContext.SaveChangesAsync();
 
         return item.Entity.Id;
+    }
+
+    public async Task<ListOfItems<CatalogItem>> GetByBrandAsync(string brand)
+    {
+        var totalItems = await _dbContext.CatalogItems
+            .LongCountAsync();
+
+        var item = await _dbContext.CatalogItems
+            .Include(i => i.CatalogBrand)
+            .Include(i => i.CatalogType)
+            .OrderBy(c => c.Name)
+            .Select(s => s)
+            .Where(s => s.CatalogBrand.Brand == brand)
+            .ToListAsync();
+
+        return new ListOfItems<CatalogItem> { Data = item };
     }
 }

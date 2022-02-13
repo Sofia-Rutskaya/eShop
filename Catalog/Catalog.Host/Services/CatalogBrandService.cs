@@ -4,7 +4,7 @@ using Catalog.Host.Services.Interfaces;
 
 namespace Catalog.Host.Services;
 
-public class CatalogBrandService : BaseDataService<ApplicationDbContext>
+public class CatalogBrandService : BaseDataService<ApplicationDbContext>, ICatalogBrandService
 {
     private readonly ICatalogBrandRepository _catalogBrandRepository;
 

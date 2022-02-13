@@ -66,7 +66,7 @@ public class CatalogItemRepository : ICatalogItemRepository
         return item.Entity.Id;
     }
 
-    public async Task<SingleItem<CatalogItem>> GetByIdAsync(int id)
+    public async Task<ListOfItems<CatalogItem>> GetByIdAsync(int id)
     {
         var totalItems = await _dbContext.CatalogItems
             .LongCountAsync();
@@ -79,6 +79,6 @@ public class CatalogItemRepository : ICatalogItemRepository
             .Where(s => s.Id == id)
             .ToListAsync();
 
-        return new SingleItem<CatalogItem> { Data = item };
+        return new ListOfItems<CatalogItem> { Data = item };
     }
 }

@@ -61,4 +61,29 @@ public class CatalogBrandRepository : ICatalogBrandRepository
 
         return new ListOfItems<CatalogItem> { Data = item };
     }
+
+    public async Task Update(int id, string brand)
+    {
+        var catalogItem = new CatalogBrand
+        {
+            Id = id,
+            Brand = brand
+        };
+        _dbContext.Update<CatalogBrand>(catalogItem);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task Delete(int id, string brand)
+    {
+        var item = await _dbContext.FindAsync<CatalogBrand>(id, brand);
+        if (item != null)
+        {
+            _dbContext.Remove<CatalogBrand>(item);
+            await _dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            _logger.LogWarning("Type not found");
+        }
+    }
 }

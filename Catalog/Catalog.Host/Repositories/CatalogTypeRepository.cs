@@ -45,5 +45,30 @@ namespace Catalog.Host.Repositories
 
             return new PaginatedItems<CatalogType>() { TotalCount = totalItems, Data = itemsOnPage };
         }
+
+        public async Task Update(int id, string type)
+        {
+            var catalogItem = new CatalogType
+            {
+                Id = id,
+                Type = type
+            };
+            _dbContext.Update<CatalogType>(catalogItem);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task Delete(int id, string type)
+        {
+            var item = await _dbContext.FindAsync<CatalogType>(id, type);
+            if (item != null)
+            {
+                _dbContext.Remove<CatalogType>(item);
+                await _dbContext.SaveChangesAsync();
+            }
+            else
+            {
+                _logger.LogWarning("Type not found");
+            }
+        }
     }
 }

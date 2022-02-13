@@ -66,6 +66,35 @@ public class CatalogItemRepository : ICatalogItemRepository
         return item.Entity.Id;
     }
 
+    public async Task Update(int id, string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId)
+    {
+        var catalogItem = new CatalogItem
+        {
+            Id = id,
+            CatalogBrandId = catalogBrandId,
+            CatalogTypeId = catalogTypeId,
+            Description = description,
+            Name = name,
+            Price = price
+        };
+        _dbContext.Update<CatalogItem>(catalogItem);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task Delete(int id, string name)
+    {
+        var item = await _dbContext.FindAsync<CatalogItem>(id, name);
+        if (item != null)
+        {
+            _dbContext.Remove<CatalogItem>(item);
+            await _dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            _logger.LogWarning("Item not found");
+        }
+    }
+
     public async Task<ListOfItems<CatalogItem>> GetByIdAsync(int id)
     {
         var totalItems = await _dbContext.CatalogItems

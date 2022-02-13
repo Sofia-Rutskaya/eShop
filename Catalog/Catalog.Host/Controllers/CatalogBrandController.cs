@@ -21,9 +21,25 @@ public class CatalogBrandController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> Add(CreateDataRequest request)
+    public async Task<IActionResult> Add(CreateOrDeleteDataRequest request)
     {
         var result = await _catalogBrandService.Add(request.Id, request.Data);
         return Ok(new AddItemResponse<int?>() { Id = result });
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> Update(CreateOrDeleteDataRequest request)
+    {
+        await _catalogBrandService.Update(request.Id, request.Data);
+        return Ok();
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> Delete(CreateOrDeleteDataRequest request)
+    {
+        await _catalogBrandService.Delete(request.Id, request.Data);
+        return Ok();
     }
 }

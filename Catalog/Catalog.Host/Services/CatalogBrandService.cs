@@ -21,4 +21,14 @@ public class CatalogBrandService : BaseDataService<ApplicationDbContext>, ICatal
     {
         return ExecuteSafeAsync(() => _catalogBrandRepository.Add(id, brand));
     }
+
+    public Task Update(int id, string brand)
+    {
+        return ExecuteSafeAsync(() => _catalogBrandRepository.Update(id, brand));
+    }
+
+    public Task Delete(int id, string brand)
+    {
+        return ExecuteSafeAsync(() => _catalogBrandRepository.Delete(id, brand));
+    }
 }

@@ -10,4 +10,5 @@ public interface ICatalogService
     Task<PaginatedItemsResponse<CatalogBrandDto>> GetCatalogBrendsAsync(int pageSize, int pageIndex);
     Task<PaginatedItemsResponse<CatalogTypeDto>> GetCatalogTypesAsync(int pageSize, int pageIndex);
     Task<GetItemByDataResponse<CatalogItemDto>> GetByBrandAsync(string brand);
+    Task<GetItemByDataResponse<CatalogItemDto>> GetByTypeAsync(string type);
 }

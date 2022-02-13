@@ -70,5 +70,21 @@ namespace Catalog.Host.Repositories
                 _logger.LogWarning("Type not found");
             }
         }
+
+        public async Task<ListOfItems<CatalogItem>> GetByTypesAsync(string type)
+        {
+            var totalItems = await _dbContext.CatalogItems
+                .LongCountAsync();
+
+            var item = await _dbContext.CatalogItems
+                .Include(i => i.CatalogBrand)
+                .Include(i => i.CatalogType)
+                .OrderBy(c => c.Name)
+                .Select(s => s)
+                .Where(s => s.CatalogType.Type == type)
+                .ToListAsync();
+
+            return new ListOfItems<CatalogItem> { Data = item };
+        }
     }
 }

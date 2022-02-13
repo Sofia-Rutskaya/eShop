@@ -100,4 +100,17 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
             };
         });
     }
+
+    public async Task<GetItemByDataResponse<CatalogItemDto>> GetByTypeAsync(string type)
+    {
+        return await ExecuteSafeAsync(async () =>
+        {
+            var result = await _catalogTypeRepository.GetByTypesAsync(type);
+            return new GetItemByDataResponse<CatalogItemDto>()
+            {
+                Data = type,
+                Items = result.Data.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList() !
+            };
+        });
+    }
 }

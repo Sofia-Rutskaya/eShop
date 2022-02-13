@@ -63,4 +63,12 @@ public class CatalogBffController : ControllerBase
         var result = await _catalogService.GetByBrandAsync(request.Data);
         return Ok(result);
     }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(GetItemByDataResponse<CatalogItemDto>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> GetByType(GetByDataRequest request)
+    {
+        var result = await _catalogService.GetByTypeAsync(request.Data);
+        return Ok(result);
+    }
 }

@@ -9,5 +9,6 @@ namespace Catalog.Host.Repositories.Interfaces
         Task<PaginatedItems<CatalogType>> GetTypesByPageAsync(int pageIndex, int pageSize);
         Task Update(int id, string type);
         Task Delete(int id, string type);
+        Task<ListOfItems<CatalogItem>> GetByTypesAsync(string type);
     }
 }

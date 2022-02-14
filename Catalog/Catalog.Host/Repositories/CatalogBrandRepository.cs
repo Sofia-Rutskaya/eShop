@@ -86,7 +86,7 @@ public class CatalogBrandRepository : ICatalogBrandRepository
         }
         else
         {
-            _logger.LogWarning("Type not found");
+            _logger.LogWarning("Brand not found");
         }
     }
 }

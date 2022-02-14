@@ -83,7 +83,11 @@ public class CatalogItemRepository : ICatalogItemRepository
 
     public async Task Delete(int id, string name)
     {
-        var item = await _dbContext.FindAsync<CatalogItem>(id, name);
+        var item = await _dbContext.CatalogItems
+            .Select(s => s)
+            .Where(s => s.Id == id && s.Name == name)
+            .FirstOrDefaultAsync();
+
         if (item != null)
         {
             _dbContext.Remove<CatalogItem>(item);

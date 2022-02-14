@@ -58,7 +58,11 @@ namespace Catalog.Host.Repositories
 
         public async Task Delete(int id, string type)
         {
-            var item = await _dbContext.FindAsync<CatalogType>(id, type);
+            var item = await _dbContext.CatalogTypes
+               .Select(s => s)
+               .Where(s => s.Id == id && s.Type == type)
+               .FirstOrDefaultAsync();
+
             if (item != null)
             {
                 _dbContext.Remove<CatalogType>(item);

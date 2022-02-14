@@ -40,7 +40,7 @@ public class CatalogItemController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> Delete(CreateOrDeleteDataRequest request)
+    public async Task<IActionResult> Delete(DeleteDataRequest request)
     {
         await _catalogItemService.Delete(request.Id, request.Data);
         return Ok();

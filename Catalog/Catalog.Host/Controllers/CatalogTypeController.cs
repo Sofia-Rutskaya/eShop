@@ -21,7 +21,7 @@ public class CatalogTypeController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> Add(CreateOrDeleteDataRequest request)
+    public async Task<IActionResult> Add(CreateDataRequest request)
     {
         var result = await _catalogTypeService.Add(request.Data);
         return Ok(new AddItemResponse<int?>() { Id = result });
@@ -29,7 +29,7 @@ public class CatalogTypeController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> Update(CreateOrDeleteDataRequest request)
+    public async Task<IActionResult> Update(DeleteDataRequest request)
     {
         await _catalogTypeService.Update(request.Id, request.Data);
         return Ok();
@@ -37,7 +37,7 @@ public class CatalogTypeController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> Delete(CreateOrDeleteDataRequest request)
+    public async Task<IActionResult> Delete(DeleteDataRequest request)
     {
         await _catalogTypeService.Delete(request.Id, request.Data);
         return Ok();

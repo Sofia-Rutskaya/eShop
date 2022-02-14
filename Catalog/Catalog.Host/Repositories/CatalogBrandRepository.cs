@@ -33,11 +33,10 @@ public class CatalogBrandRepository : ICatalogBrandRepository
         return new PaginatedItems<CatalogBrand>() { TotalCount = totalItems, Data = itemsOnPage };
     }
 
-    public async Task<int?> Add(int id, string brand)
+    public async Task<int?> Add(string brand)
     {
         var item = await _dbContext.AddAsync(new CatalogBrand
         {
-            Id = id,
             Brand = brand
         });
 
@@ -75,7 +74,11 @@ public class CatalogBrandRepository : ICatalogBrandRepository
 
     public async Task Delete(int id, string brand)
     {
-        var item = await _dbContext.FindAsync<CatalogBrand>(id, brand);
+        var item = await _dbContext.CatalogBrands
+            .Select(s => s)
+            .Where(s => s.Id == id && s.Brand == brand)
+            .FirstOrDefaultAsync();
+
         if (item != null)
         {
             _dbContext.Remove<CatalogBrand>(item);

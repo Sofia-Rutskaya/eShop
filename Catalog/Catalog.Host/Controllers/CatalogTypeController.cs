@@ -23,7 +23,7 @@ public class CatalogTypeController : ControllerBase
     [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Add(CreateOrDeleteDataRequest request)
     {
-        var result = await _catalogTypeService.Add(request.Id, request.Data);
+        var result = await _catalogTypeService.Add(request.Data);
         return Ok(new AddItemResponse<int?>() { Id = result });
     }
 

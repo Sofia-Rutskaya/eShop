@@ -17,9 +17,9 @@ public class CatalogBrandService : BaseDataService<ApplicationDbContext>, ICatal
         _catalogBrandRepository = catalogBrandRepository;
     }
 
-    public Task<int?> Add(int id, string brand)
+    public Task<int?> Add(string brand)
     {
-        return ExecuteSafeAsync(() => _catalogBrandRepository.Add(id, brand));
+        return ExecuteSafeAsync(() => _catalogBrandRepository.Add(brand));
     }
 
     public Task Update(int id, string brand)

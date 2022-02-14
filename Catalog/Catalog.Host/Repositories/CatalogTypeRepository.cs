@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Host.Repositories
 {
-    public class CatalogTypeRepository
+    public class CatalogTypeRepository : ICatalogTypeRepository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger<CatalogTypeRepository> _logger;
@@ -19,11 +19,10 @@ namespace Catalog.Host.Repositories
             _logger = logger;
         }
 
-        public async Task<int?> Add(int id, string type)
+        public async Task<int?> Add(string type)
         {
             var item = await _dbContext.AddAsync(new CatalogType
             {
-                Id = id,
                 Type = type
             });
 

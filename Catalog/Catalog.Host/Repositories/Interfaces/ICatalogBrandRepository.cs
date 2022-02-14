@@ -6,7 +6,7 @@ namespace Catalog.Host.Repositories.Interfaces
     public interface ICatalogBrandRepository
     {
         Task<PaginatedItems<CatalogBrand>> GetBrendsByPageAsync(int pageIndex, int pageSize);
-        Task<int?> Add(int id, string brand);
+        Task<int?> Add(string brand);
         Task<ListOfItems<CatalogItem>> GetByBrandAsync(string brand);
         Task Update(int id, string brand);
         Task Delete(int id, string brand);

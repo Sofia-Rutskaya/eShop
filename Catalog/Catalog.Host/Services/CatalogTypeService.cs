@@ -17,9 +17,9 @@ public class CatalogTypeService : BaseDataService<ApplicationDbContext>, ICatalo
         _catalogTypeRepository = catalogTypeRepository;
     }
 
-    public Task<int?> Add(int id, string type)
+    public Task<int?> Add(string type)
     {
-        return ExecuteSafeAsync(() => _catalogTypeRepository.Add(id, type));
+        return ExecuteSafeAsync(() => _catalogTypeRepository.Add(type));
     }
 
     public Task Update(int id, string type)

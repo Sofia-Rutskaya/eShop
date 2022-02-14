@@ -2,7 +2,7 @@
 {
     public interface ICatalogBrandService
     {
-        Task<int?> Add(int id, string brand);
+        Task<int?> Add(string brand);
         Task Delete(int id, string brand);
         Task Update(int id, string brand);
     }

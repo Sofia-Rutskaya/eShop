@@ -10,6 +10,8 @@ public class CatalogServiceTest
     private readonly ICatalogService _catalogService;
 
     private readonly Mock<ICatalogItemRepository> _catalogItemRepository;
+    private readonly Mock<ICatalogBrandRepository> _catalogBrandRepository;
+    private readonly Mock<ICatalogTypeRepository> _catalogTypeRepository;
     private readonly Mock<IMapper> _mapper;
     private readonly Mock<IDbContextWrapper<ApplicationDbContext>> _dbContextWrapper;
     private readonly Mock<ILogger<CatalogService>> _logger;
@@ -17,6 +19,8 @@ public class CatalogServiceTest
     public CatalogServiceTest()
     {
         _catalogItemRepository = new Mock<ICatalogItemRepository>();
+        _catalogBrandRepository = new Mock<ICatalogBrandRepository>();
+        _catalogTypeRepository = new Mock<ICatalogTypeRepository>();
         _mapper = new Mock<IMapper>();
         _dbContextWrapper = new Mock<IDbContextWrapper<ApplicationDbContext>>();
         _logger = new Mock<ILogger<CatalogService>>();
@@ -24,7 +28,7 @@ public class CatalogServiceTest
         var dbContextTransaction = new Mock<IDbContextTransaction>();
         _dbContextWrapper.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransaction.Object);
 
-        _catalogService = new CatalogService(_dbContextWrapper.Object, _logger.Object, _catalogItemRepository.Object, _mapper.Object);
+        _catalogService = new CatalogService(_dbContextWrapper.Object, _logger.Object, _catalogItemRepository.Object, _catalogBrandRepository.Object, _catalogTypeRepository.Object, _mapper.Object);
     }
 
     [Fact]

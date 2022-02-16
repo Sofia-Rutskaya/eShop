@@ -1,7 +1,6 @@
 ﻿using Catalog.Host.Data;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services.Interfaces;
-
 namespace Catalog.Host.Services;
 
 public class CatalogBrandService : BaseDataService<ApplicationDbContext>, ICatalogBrandService

@@ -66,36 +66,41 @@ public class CatalogItemRepository : ICatalogItemRepository
         return item.Entity.Id;
     }
 
-    public async Task Update(int id, string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId)
+    public async Task<bool> Update(int id, string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId)
     {
-        var catalogItem = new CatalogItem
+        var catalogItem = await _dbContext.CatalogItems
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (catalogItem != null)
         {
-            Id = id,
-            CatalogBrandId = catalogBrandId,
-            CatalogTypeId = catalogTypeId,
-            Description = description,
-            Name = name,
-            Price = price
-        };
-        _dbContext.Update<CatalogItem>(catalogItem);
-        await _dbContext.SaveChangesAsync();
+            catalogItem.CatalogBrandId = catalogBrandId;
+            catalogItem.CatalogTypeId = catalogTypeId;
+            catalogItem.Description = description;
+            catalogItem.Name = name;
+            catalogItem.Price = price;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        return false;
     }
 
-    public async Task Delete(int id, string name)
+    public async Task<bool> Delete(int id)
     {
         var item = await _dbContext.CatalogItems
-            .Select(s => s)
-            .Where(s => s.Id == id && s.Name == name)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(s => s.Id == id);
 
         if (item != null)
         {
             _dbContext.Remove<CatalogItem>(item);
             await _dbContext.SaveChangesAsync();
+            return true;
         }
         else
         {
             _logger.LogWarning("Item not found");
+            return false;
         }
     }
 

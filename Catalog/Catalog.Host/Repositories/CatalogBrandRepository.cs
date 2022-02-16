@@ -61,32 +61,37 @@ public class CatalogBrandRepository : ICatalogBrandRepository
         return new ListOfItems<CatalogItem> { Data = item };
     }
 
-    public async Task Update(int id, string brand)
+    public async Task<bool> Update(int id, string brand)
     {
-        var catalogItem = new CatalogBrand
+        var catalogItem = await _dbContext.CatalogBrands
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (catalogItem != null)
         {
-            Id = id,
-            Brand = brand
-        };
-        _dbContext.Update<CatalogBrand>(catalogItem);
-        await _dbContext.SaveChangesAsync();
+            catalogItem.Brand = brand;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        return false;
     }
 
-    public async Task Delete(int id, string brand)
+    public async Task<bool> Delete(int id)
     {
         var item = await _dbContext.CatalogBrands
-            .Select(s => s)
-            .Where(s => s.Id == id && s.Brand == brand)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(s => s.Id == id);
 
         if (item != null)
         {
             _dbContext.Remove<CatalogBrand>(item);
             await _dbContext.SaveChangesAsync();
+            return true;
         }
         else
         {
             _logger.LogWarning("Brand not found");
+            return false;
         }
     }
 }

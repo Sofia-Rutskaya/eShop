@@ -3,7 +3,7 @@
     public interface ICatalogTypeService
     {
         Task<int?> Add(string type);
-        Task Delete(int id, string type);
-        Task Update(int id, string type);
+        Task<bool> Delete(int id);
+        Task<bool> Update(int id, string type);
     }
 }

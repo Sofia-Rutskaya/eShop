@@ -37,9 +37,9 @@ public class CatalogBrandController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> Delete(DeleteDataRequest request)
+    public async Task<IActionResult> Delete(GetItemByIdRequest request)
     {
-        await _catalogBrandService.Delete(request.Id, request.Data);
+        await _catalogBrandService.Delete(request.Id);
         return Ok();
     }
 }

@@ -343,4 +343,98 @@ public class CatalogServiceTest
         result?.Data.Should().Be(brand);
         result?.Items.Should().NotBeNull();
     }
+
+    [Fact]
+
+    public async Task GetByBrandAsync_Failed()
+    {
+        // arrange
+        string brand = string.Empty;
+
+        var data = new ListOfItems<CatalogItem>
+        {
+            Data = new List<CatalogItem>()
+            {
+                new CatalogItem()
+                {
+                    Name = "TestName",
+                },
+            }
+        };
+
+        _catalogBrandRepository.Setup(s => s.GetByBrandAsync(
+            It.Is<string>(i => i == brand))).ReturnsAsync((Func<ListOfItems<CatalogItem>>)null!);
+
+        // act
+        var result = await _catalogService.GetByBrandAsync(brand);
+
+        // assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+
+    public async Task GetByTypeAsync_Success()
+    {
+        // arrange
+        var type = "NewBrand";
+
+        var data = new ListOfItems<CatalogItem>
+        {
+            Data = new List<CatalogItem>()
+            {
+                new CatalogItem()
+                {
+                    Name = "TestName",
+                },
+            }
+        };
+
+        var itemByIdSuccess = new CatalogItemDto()
+        {
+            Name = "TestName"
+        };
+
+        _catalogTypeRepository.Setup(s => s.GetByTypesAsync(
+            It.Is<string>(i => i == type))).ReturnsAsync(data);
+
+        _mapper.Setup(s => s.Map<CatalogItemDto>(
+            It.Is<ListOfItems<CatalogItem>>(i => i.Equals(data)))).Returns(itemByIdSuccess);
+
+        // act
+        var result = await _catalogService.GetByTypeAsync(type);
+
+        // assert
+        result.Should().NotBeNull();
+        result?.Data.Should().Be(type);
+        result?.Items.Should().NotBeNull();
+    }
+
+    [Fact]
+
+    public async Task GetByTypeAsync_Failed()
+    {
+        // arrange
+        string type = string.Empty;
+
+        var data = new ListOfItems<CatalogItem>
+        {
+            Data = new List<CatalogItem>()
+            {
+                new CatalogItem()
+                {
+                    Name = "TestName",
+                },
+            }
+        };
+
+        _catalogTypeRepository.Setup(s => s.GetByTypesAsync(
+            It.Is<string>(i => i == type))).ReturnsAsync((Func<ListOfItems<CatalogItem>>)null!);
+
+        // act
+        var result = await _catalogService.GetByTypeAsync(type);
+
+        // assert
+        result.Should().BeNull();
+    }
 }

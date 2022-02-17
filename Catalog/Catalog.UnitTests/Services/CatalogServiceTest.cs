@@ -146,7 +146,7 @@ public class CatalogServiceTest
     }
 
     [Fact]
-    public async Task GetCataloBrandAsync_Failed()
+    public async Task GetCatalogBrandAsync_Failed()
     {
         // arrange
         var testPageIndex = 1000;
@@ -212,7 +212,7 @@ public class CatalogServiceTest
     }
 
     [Fact]
-    public async Task GetCataloTypesAsync_Failed()
+    public async Task GetCatalogTypesAsync_Failed()
     {
         // arrange
         var testPageIndex = 1000;
@@ -224,6 +224,83 @@ public class CatalogServiceTest
 
         // act
         var result = await _catalogService.GetCatalogTypesAsync(testPageSize, testPageIndex);
+
+        // assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+
+    public async Task GetByIdAsync_Success()
+    {
+        // arrange
+        var id = 1;
+
+        var data = new ListOfItems<CatalogItem>
+        {
+            Data = new List<CatalogItem>()
+            {
+                new CatalogItem()
+                {
+                    Id = id,
+                    Name = "TestName",
+                },
+            }
+        };
+
+        var itemSuccess = new CatalogItemDto()
+        {
+            Id = id,
+            Name = "TestName"
+        };
+
+        var itemByIdSuccess = new GetItemByIdResponse<CatalogItemDto>()
+        {
+            Id = id,
+            Data = itemSuccess
+        };
+
+        _catalogItemRepository.Setup(s => s.GetByIdAsync(
+            It.Is<int>(i => i == id))).ReturnsAsync(data);
+
+        _mapper.Setup(s => s.Map<CatalogItemDto>(
+            It.Is<ListOfItems<CatalogItem>>(i => i.Equals(data)))).Returns(itemSuccess);
+
+        // act
+        var result = await _catalogService.GetByIdAsync(id);
+
+        // assert
+        result.Should().NotBeNull();
+        result?.Id.Should().Be(id);
+        result?.Name.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task GetByIdAsync_Failed()
+    {
+        // arrange
+        int id = -10;
+
+        var data = new ListOfItems<CatalogItem>
+        {
+            Data = new List<CatalogItem>()
+            {
+                new CatalogItem()
+                {
+                    Id = id,
+                    Name = "TestName",
+                },
+            }
+        };
+
+        _catalogItemRepository.Setup(s => s.GetByIdAsync(
+            It.Is<int>(i => i == id))).ReturnsAsync(data);
+
+        _mapper.Setup(s => s.Map<CatalogItemDto>(
+            It.Is<ListOfItems<CatalogItem>>(i => i.Equals(data)))).Returns((Func<ListOfItems<CatalogItem>>)null!);
+
+        // act
+        var result = await _catalogService.GetByIdAsync(id);
 
         // assert
         result.Should().BeNull();

@@ -75,16 +75,12 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
         });
     }
 
-    public async Task<GetItemByIdResponse<CatalogItemDto>> GetByIdAsync(int id)
+    public async Task<CatalogItemDto> GetByIdAsync(int id)
     {
         return await ExecuteSafeAsync(async () =>
         {
             var result = await _catalogItemRepository.GetByIdAsync(id);
-            return new GetItemByIdResponse<CatalogItemDto>()
-            {
-                Id = id,
-                Data = result.Data.Select(s => _mapper.Map<CatalogItemDto>(s)).FirstOrDefault() !
-            };
+            return _mapper.Map<CatalogItemDto>(result);
         });
     }
 

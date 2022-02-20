@@ -12,7 +12,7 @@ public class HttpClientService : IHttpClientService
         _clientFactory = clientFactory;
     }
 
-    public async Task<TResponse> SendAsync<TResponse, TRequest>(string url, HttpMethod method, TRequest? content)
+    public async Task<TResponse?> SendAsync<TResponse, TRequest>(string url, HttpMethod method, TRequest? content)
     {
         var client = _clientFactory.CreateClient();
 

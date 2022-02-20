@@ -27,8 +27,8 @@ public class CatalogItemService : BaseDataService<ApplicationDbContext>, ICatalo
     }
 
     public Task<bool> Delete(int id)
-    
-        return ExecuteSafeAsync(() => _catalogItemRepository.Delete(id)); 
+    {
+        return ExecuteSafeAsync(() => _catalogItemRepository.Delete(id));
     }
 
     public Task<int?> AddAsync(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)

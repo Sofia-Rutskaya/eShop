@@ -35,7 +35,7 @@ public class CatalogBrandRepository : ICatalogBrandRepository
 
     public async Task<int?> Add(string brand)
     {
-        var item = await _dbContext.AddAsync(new CatalogBrand
+        var item = await _dbContext.Add(new CatalogBrand
         {
             Brand = brand
         });

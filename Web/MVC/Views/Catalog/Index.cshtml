@@ -12,10 +12,16 @@
     <div class="container">
         <form asp-action="Index" asp-controller="Catalog" method="post">
             <label class="esh-catalog-label" data-title="brand">
-                <select asp-for="@Model.BrandFilterApplied" asp-items="@Model.Brands" class="esh-catalog-filter"></select>
+                @if (Model?.BrandFilterApplied != null)
+                {
+                    <select asp-for="@Model.BrandFilterApplied" asp-items="@Model.Brands" class="esh-catalog-filter"></select>
+                }
             </label>
             <label class="esh-catalog-label" data-title="type">
-                <select asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="esh-catalog-filter"></select>
+                @if (Model?.TypesFilterApplied != null)
+                {
+                    <select asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="esh-catalog-filter"></select>
+                }
             </label>
             <input class="esh-catalog-send" type="image" src="~/images/arrow-right.svg" />
         </form>
@@ -33,7 +39,7 @@
         }
     </div>
 
-    @if (Model.CatalogItems.Count() > 0)
+    @if (Model?.CatalogItems.Count() > 0)
     {
     <partial name="_pagination" for="PaginationInfo" />
 

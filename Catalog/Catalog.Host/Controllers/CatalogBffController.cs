@@ -32,4 +32,44 @@ public class CatalogBffController : ControllerBase
         var result = await _catalogService.GetCatalogItemsAsync(request.PageSize, request.PageIndex, request.Filters);
         return Ok(result);
     }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogBrandDto>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> GetBrends(PaginatedItemsRequest request)
+    {
+        var result = await _catalogService.GetCatalogBrendsAsync(request.PageSize, request.PageIndex);
+        return Ok(result);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogTypeDto>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> GetTypes(PaginatedItemsRequest request)
+    {
+        var result = await _catalogService.GetCatalogTypesAsync(request.PageSize, request.PageIndex);
+        return Ok(result);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(GetItemByIdResponse<CatalogItemDto>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> GetById(GetItemByIdRequest request)
+    {
+        var result = await _catalogService.GetByIdAsync(request.Id);
+        return Ok(result);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(GetItemByDataResponse<CatalogItemDto>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> GetByBrend(GetByDataRequest request)
+    {
+        var result = await _catalogService.GetByBrandAsync(request.Data);
+        return Ok(result);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(GetItemByDataResponse<CatalogItemDto>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> GetByType(GetByDataRequest request)
+    {
+        var result = await _catalogService.GetByTypeAsync(request.Data);
+        return Ok(result);
+    }
 }

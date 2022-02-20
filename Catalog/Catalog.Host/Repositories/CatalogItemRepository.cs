@@ -43,8 +43,24 @@ public class CatalogItemRepository : ICatalogItemRepository
         return new PaginatedItems<CatalogItem>() { TotalCount = totalItems, Data = itemsOnPage };
     }
 
+    public async Task<PaginatedItems<CatalogBrand>> GetBrendsByPageAsync(int pageIndex, int pageSize)
+    {
+        var totalItems = await _dbContext.CatalogBrands
+            .LongCountAsync();
+
+        var itemsOnPage = await _dbContext.CatalogBrands
+            .OrderBy(c => c.Id)
+            .Skip(pageSize * pageIndex)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PaginatedItems<CatalogBrand>() { TotalCount = totalItems, Data = itemsOnPage };
+    }
+
     public async Task<int?> Add(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
     {
+        var item = await _dbContext.AddAsync(new CatalogItem
+        {
         var item1 = new CatalogItem
         {
             CatalogBrandId = catalogBrandId,
@@ -59,5 +75,59 @@ public class CatalogItemRepository : ICatalogItemRepository
         await _dbContext.SaveChangesAsync();
 
         return item.Entity.Id;
+    }
+
+    public async Task<bool> Update(int id, string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId)
+    {
+        var catalogItem = await _dbContext.CatalogItems
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (catalogItem != null)
+        {
+            catalogItem.CatalogBrandId = catalogBrandId;
+            catalogItem.CatalogTypeId = catalogTypeId;
+            catalogItem.Description = description;
+            catalogItem.Name = name;
+            catalogItem.Price = price;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        return false;
+    }
+
+    public async Task<bool> Delete(int id)
+    {
+        var item = await _dbContext.CatalogItems
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (item != null)
+        {
+            _dbContext.Remove<CatalogItem>(item);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+        else
+        {
+            _logger.LogWarning("Item not found");
+            return false;
+        }
+    }
+
+    public async Task<ListOfItems<CatalogItem>> GetByIdAsync(int id)
+    {
+        var totalItems = await _dbContext.CatalogItems
+            .LongCountAsync();
+
+        var item = await _dbContext.CatalogItems
+            .Include(i => i.CatalogBrand)
+            .Include(i => i.CatalogType)
+            .OrderBy(c => c.Name)
+            .Select(s => s)
+            .Where(s => s.Id == id)
+            .ToListAsync();
+
+        return new ListOfItems<CatalogItem> { Data = item };
     }
 }

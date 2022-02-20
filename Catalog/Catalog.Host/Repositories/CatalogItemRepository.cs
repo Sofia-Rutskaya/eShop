@@ -59,8 +59,6 @@ public class CatalogItemRepository : ICatalogItemRepository
 
     public async Task<int?> Add(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName)
     {
-        var item = await _dbContext.AddAsync(new CatalogItem
-        {
         var item1 = new CatalogItem
         {
             CatalogBrandId = catalogBrandId,

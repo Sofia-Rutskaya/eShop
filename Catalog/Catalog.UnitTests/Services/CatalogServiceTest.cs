@@ -95,7 +95,7 @@ public class CatalogServiceTest
             It.IsAny<int?>())).Returns((Func<PaginatedItemsResponse<CatalogItemDto>>)null!);
 
         // act
-        var result = await _catalogService.GetCatalogItemsAsync(testPageSize, testPageIndex);
+        var result = await _catalogService.GetCatalogItemsAsync(testPageSize, testPageIndex, null);
 
         // assert
         result.Should().BeNull();
@@ -437,7 +437,6 @@ public class CatalogServiceTest
 
         // act
         var result = await _catalogService.GetByTypeAsync(type);
-        var result = await _catalogService.GetCatalogItemsAsync(testPageSize, testPageIndex, null);
 
         // assert
         result.Should().BeNull();

@@ -5,7 +5,7 @@ using Catalog.Host.Models.Response;
 namespace Catalog.Host.Services.Interfaces;
 
 public interface ICatalogService
-
+{
     Task<CatalogItemDto> GetByIdAsync(int id);
     Task<PaginatedItemsResponse<CatalogBrandDto>> GetCatalogBrendsAsync(int pageSize, int pageIndex);
     Task<PaginatedItemsResponse<CatalogTypeDto>> GetCatalogTypesAsync(int pageSize, int pageIndex);

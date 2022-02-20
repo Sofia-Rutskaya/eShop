@@ -35,7 +35,7 @@ public class CatalogBffController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogBrandDto>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> GetBrends(PaginatedItemsRequest request)
+    public async Task<IActionResult> GetBrends(PaginatedItemsRequest<CatalogTypeFilter> request)
     {
         var result = await _catalogService.GetCatalogBrendsAsync(request.PageSize, request.PageIndex);
         return Ok(result);
@@ -43,7 +43,7 @@ public class CatalogBffController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogTypeDto>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> GetTypes(PaginatedItemsRequest request)
+    public async Task<IActionResult> GetTypes(PaginatedItemsRequest<CatalogTypeFilter> request)
     {
         var result = await _catalogService.GetCatalogTypesAsync(request.PageSize, request.PageIndex);
         return Ok(result);

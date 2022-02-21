@@ -8,7 +8,7 @@ public interface ICatalogService
 {
     Task<CatalogItemDto> GetByIdAsync(int id);
     Task<GetItemByDataResponse<CatalogBrandDto>?> GetCatalogBrendsAsync();
-    Task<PaginatedItemsResponse<CatalogTypeDto>> GetCatalogTypesAsync(int pageSize, int pageIndex);
+    Task<GetItemByDataResponse<CatalogTypeDto>> GetCatalogTypesAsync();
     Task<GetItemByDataResponse<CatalogItemDto>> GetByBrandAsync(string brand);
     Task<GetItemByDataResponse<CatalogItemDto>> GetByTypeAsync(string type);
     Task<PaginatedItemsResponse<CatalogItemDto>?> GetCatalogItemsAsync(int pageSize, int pageIndex, Dictionary<CatalogTypeFilter, int>? filters);

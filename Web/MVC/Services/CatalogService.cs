@@ -73,22 +73,25 @@ public class CatalogService : ICatalogService
 
     public async Task<IEnumerable<SelectListItem>> GetTypes()
     {
-        await Task.Delay(300);
-
         var url = @$"http://www.alevelwebsite.com:5000/api/v1/CatalogBff/GetTypes";
-        var list = new List<SelectListItem>
+
+        var result = await _httpClient.SendAsync<DataItemRequest<CatalogType>, DataItemRequest<CatalogType>>(
+           url,
+           HttpMethod.Post,
+           null!);
+
+        var list = new List<SelectListItem>();
+        if (result != null)
         {
-            new SelectListItem()
+            foreach (var item in result.Items)
             {
-                Value = "0",
-                Text = "type 1"
-            },
-            new SelectListItem()
-            {
-                Value = "1",
-                Text = "type 2"
+                list.Add(new SelectListItem()
+                {
+                    Value = $"{item.Id}",
+                    Text = item.Type
+                });
             }
-        };
+        }
 
         return list;
     }

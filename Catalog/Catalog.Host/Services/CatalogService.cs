@@ -78,17 +78,14 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
         });
     }
 
-    public async Task<PaginatedItemsResponse<CatalogTypeDto>> GetCatalogTypesAsync(int pageSize, int pageIndex)
+    public async Task<GetItemByDataResponse<CatalogTypeDto>> GetCatalogTypesAsync()
     {
         return await ExecuteSafeAsync(async () =>
         {
-            var result = await _catalogTypeRepository.GetTypesByPageAsync(pageIndex, pageSize);
-            return new PaginatedItemsResponse<CatalogTypeDto>()
+            var result = await _catalogTypeRepository.GetTypesAsync();
+            return new GetItemByDataResponse<CatalogTypeDto>()
             {
-                Count = result.TotalCount,
-                Data = result.Data.Select(s => _mapper.Map<CatalogTypeDto>(s)).ToList(),
-                PageIndex = pageIndex,
-                PageSize = pageSize
+                Items = result.Data.Select(s => _mapper.Map<CatalogTypeDto>(s)).ToList(),
             };
         });
     }

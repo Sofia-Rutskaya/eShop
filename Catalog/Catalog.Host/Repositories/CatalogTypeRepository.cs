@@ -31,18 +31,16 @@ namespace Catalog.Host.Repositories
             return item.Entity.Id;
         }
 
-        public async Task<PaginatedItems<CatalogType>> GetTypesByPageAsync(int pageIndex, int pageSize)
+        public async Task<ListOfItems<CatalogType>> GetTypesAsync()
         {
             var totalItems = await _dbContext.CatalogTypes
                 .LongCountAsync();
 
             var itemsOnPage = await _dbContext.CatalogTypes
                 .OrderBy(c => c.Id)
-                .Skip(pageSize * pageIndex)
-                .Take(pageSize)
                 .ToListAsync();
 
-            return new PaginatedItems<CatalogType>() { TotalCount = totalItems, Data = itemsOnPage };
+            return new ListOfItems<CatalogType> { Data = itemsOnPage };
         }
 
         public async Task<bool> Update(int id, string type)

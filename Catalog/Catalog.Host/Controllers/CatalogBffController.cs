@@ -42,10 +42,10 @@ public class CatalogBffController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogTypeDto>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> GetTypes(PaginatedItemsRequest<CatalogTypeFilter> request)
+    [ProducesResponseType(typeof(GetItemByDataResponse<CatalogTypeDto>), (int)HttpStatusCode.OK)]
+    public async Task<IActionResult> GetTypes()
     {
-        var result = await _catalogService.GetCatalogTypesAsync(request.PageSize, request.PageIndex);
+        var result = await _catalogService.GetCatalogTypesAsync();
         return Ok(result);
     }
 

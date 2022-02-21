@@ -2,6 +2,7 @@
 using MVC.Models.Enums;
 using MVC.Services.Interfaces;
 using MVC.ViewModels;
+using MVC.Models.Requests;
 
 namespace MVC.Services;
 
@@ -47,20 +48,25 @@ public class CatalogService : ICatalogService
 
     public async Task<IEnumerable<SelectListItem>> GetBrands()
     {
-        await Task.Delay(300);
-        var list = new List<SelectListItem>
+        var url = @$"http://www.alevelwebsite.com:5000/api/v1/CatalogBff/GetBrends";
+
+        var result = await _httpClient.SendAsync<DataItemRequest<CatalogBrand>, DataItemRequest<CatalogBrand>>(
+           url,
+           HttpMethod.Post,
+           null !);
+
+        var list = new List<SelectListItem>();
+        if (result != null)
         {
-            new SelectListItem()
+            foreach (var item in result.Items)
             {
-                Value = "0",
-                Text = "brand 1"
-            },
-            new SelectListItem()
-            {
-                Value = "1",
-                Text = "brand 2"
+                list.Add(new SelectListItem()
+                {
+                    Value = $"{item.Id}",
+                    Text = item.Brand
+                });
             }
-        };
+        }
 
         return list;
     }
@@ -68,6 +74,8 @@ public class CatalogService : ICatalogService
     public async Task<IEnumerable<SelectListItem>> GetTypes()
     {
         await Task.Delay(300);
+
+        var url = @$"http://www.alevelwebsite.com:5000/api/v1/CatalogBff/GetTypes";
         var list = new List<SelectListItem>
         {
             new SelectListItem()

@@ -19,18 +19,16 @@ public class CatalogBrandRepository : ICatalogBrandRepository
         _logger = logger;
     }
 
-    public async Task<PaginatedItems<CatalogBrand>> GetBrendsByPageAsync(int pageIndex, int pageSize)
+    public async Task<ListOfItems<CatalogBrand>> GetBrendsAsync()
     {
         var totalItems = await _dbContext.CatalogBrands
             .LongCountAsync();
 
         var itemsOnPage = await _dbContext.CatalogBrands
             .OrderBy(c => c.Id)
-            .Skip(pageSize * pageIndex)
-            .Take(pageSize)
             .ToListAsync();
 
-        return new PaginatedItems<CatalogBrand>() { TotalCount = totalItems, Data = itemsOnPage };
+        return new ListOfItems<CatalogBrand> { Data = itemsOnPage };
     }
 
     public async Task<int?> Add(string brand)

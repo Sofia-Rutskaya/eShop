@@ -1,6 +1,6 @@
-﻿namespace Catalog.Host.Models.Response
+﻿namespace MVC.Models.Requests
 {
-    public class GetItemByDataResponse<TItem>
+    public class DataItemRequest<TItem>
     {
         public string? Data { get; init; }
         public IEnumerable<TItem> Items { get; init; } = null!;

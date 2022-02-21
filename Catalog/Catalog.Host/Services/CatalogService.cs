@@ -65,17 +65,15 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
         });
     }
 
-    public async Task<PaginatedItemsResponse<CatalogBrandDto>> GetCatalogBrendsAsync(int pageSize, int pageIndex)
+    public async Task<GetItemByDataResponse<CatalogBrandDto>?> GetCatalogBrendsAsync()
     {
         return await ExecuteSafeAsync(async () =>
         {
-            var result = await _catalogBrendRepository.GetBrendsByPageAsync(pageIndex, pageSize);
-            return new PaginatedItemsResponse<CatalogBrandDto>()
+            var result = await _catalogBrendRepository.GetBrendsAsync();
+
+            return new GetItemByDataResponse<CatalogBrandDto>()
             {
-                Count = result.TotalCount,
-                Data = result.Data.Select(s => _mapper.Map<CatalogBrandDto>(s)).ToList(),
-                PageIndex = pageIndex,
-                PageSize = pageSize
+                Items = result.Data.Select(s => _mapper.Map<CatalogBrandDto>(s)).ToList() !
             };
         });
     }
